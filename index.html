@@ -1,64 +1,71 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
-        <meta name="mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
-        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="css/leaflet-search.css">
-        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
-        <link rel="stylesheet" href="css/leaflet-measure.css">
-        <style>
-        html, body, #map {
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="css/leaflet.css">
+    <link rel="stylesheet" href="css/L.Control.Locate.min.css">
+    <link rel="stylesheet" href="css/qgis2web.css">
+    <link rel="stylesheet" href="css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="css/leaflet-search.css">
+    <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+    <link rel="stylesheet" href="css/leaflet-measure.css">
+    <style>
+        html,
+        body,
+        #map {
             width: 100%;
             height: 100%;
             padding: 0;
             margin: 0;
         }
-        </style>
-        <title></title>
-    </head>
-    <body>
-        <div id="map">
-        </div>
-        <script src="js/qgis2web_expressions.js"></script>
-        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
-        <script src="js/leaflet.rotatedMarker.js"></script>
-        <script src="js/leaflet.pattern.js"></script>
-        <script src="js/leaflet-hash.js"></script>
-        <script src="js/Autolinker.min.js"></script>
-        <script src="js/rbush.min.js"></script>
-        <script src="js/labelgun.min.js"></script>
-        <script src="js/labels.js"></script>
-        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
-        <script src="js/leaflet-measure.js"></script>
-        <script src="js/leaflet-search.js"></script>
-        <script>
+    </style>
+    <title></title>
+</head>
+
+<body>
+    <div id="map">
+    </div>
+    <script src="js/qgis2web_expressions.js"></script>
+    <script src="js/leaflet.js"></script>
+    <script src="js/L.Control.Locate.min.js"></script>
+    <script src="js/leaflet.rotatedMarker.js"></script>
+    <script src="js/leaflet.pattern.js"></script>
+    <script src="js/leaflet-hash.js"></script>
+    <script src="js/Autolinker.min.js"></script>
+    <script src="js/rbush.min.js"></script>
+    <script src="js/labelgun.min.js"></script>
+    <script src="js/labels.js"></script>
+    <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+    <script src="js/leaflet-measure.js"></script>
+    <script src="js/leaflet-search.js"></script>
+    <script>
         var highlightLayer;
         function highlightFeature(e) {
             highlightLayer = e.target;
 
             if (e.target.feature.geometry.type === 'LineString') {
-              highlightLayer.setStyle({
-                color: '#ffff00',
-              });
+                highlightLayer.setStyle({
+                    color: '#ffff00',
+                });
             } else {
-              highlightLayer.setStyle({
-                fillColor: '#ffff00',
-                fillOpacity: 1
-              });
+                highlightLayer.setStyle({
+                    fillColor: '#ffff00',
+                    fillOpacity: 1
+                });
             }
         }
         var map = L.map('map', {
-            zoomControl:true, maxZoom:28, minZoom:1
-        }).fitBounds([[37.315943989837145,-115.85343209247651],[42.31727314657777,-105.06396029578057]]);
+            zoomControl: true, maxZoom: 28, minZoom: 1
+        }).fitBounds([[37.315943989837145, -115.85343209247651], [42.31727314657777, -105.06396029578057]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
-        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
-        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var autolinker = new Autolinker({ truncate: { length: 30, location: 'smart' } });
+        L.control.locate({ locateOptions: { maxZoom: 19 } }).addTo(map);
         var measureControl = new L.Control.Measure({
             position: 'topleft',
             primaryLengthUnit: 'feet',
@@ -68,16 +75,16 @@
         });
         measureControl.addTo(map);
         document.getElementsByClassName('leaflet-control-measure-toggle')[0]
-        .innerHTML = '';
+            .innerHTML = '';
         document.getElementsByClassName('leaflet-control-measure-toggle')[0]
-        .className += ' fas fa-ruler';
+            .className += ' fas fa-ruler';
         var bounds_group = new L.featureGroup([]);
         function setBounds() {
             map.setMaxBounds(map.getBounds());
         }
         function pop_UT_State_Boundary_0(feature, layer) {
             layer.on({
-                mouseout: function(e) {
+                mouseout: function (e) {
                     for (i in e.target._eventParents) {
                         e.target._eventParents[i].resetStyle(e.target);
                     }
@@ -113,7 +120,7 @@
                         <td colspan="2">' + (feature.properties['AWATER'] !== null ? autolinker.link(feature.properties['AWATER'].toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
-            layer.bindPopup(popupContent, {maxHeight: 400});
+            layer.bindPopup(popupContent, { maxHeight: 400 });
         }
 
         function style_UT_State_Boundary_0_0() {
@@ -148,16 +155,16 @@
         map.addLayer(layer_UT_State_Boundary_0);
         map.createPane('pane_UT_DEM_Fixed_1');
         map.getPane('pane_UT_DEM_Fixed_1').style.zIndex = 401;
-        var img_UT_DEM_Fixed_1 = 'data/UT_DEM_Fixed_1.png';
-        var img_bounds_UT_DEM_Fixed_1 = [[36.998194444,-114.052916667],[42.001527778,-109.04125]];
+        var img_UT_DEM_Fixed_1 = 'http://localhost:8080/geoserver/mapdemo/wms?service=WMS&version=1.1.0&request=GetMap&layers=mapdemo';
+        var img_bounds_UT_DEM_Fixed_1 = [[36.998194444, -114.052916667], [42.001527778, -109.04125]];
         var layer_UT_DEM_Fixed_1 = new L.imageOverlay(img_UT_DEM_Fixed_1,
-                                              img_bounds_UT_DEM_Fixed_1,
-                                              {pane: 'pane_UT_DEM_Fixed_1'});
+            img_bounds_UT_DEM_Fixed_1,
+            { pane: 'pane_UT_DEM_Fixed_1' });
         bounds_group.addLayer(layer_UT_DEM_Fixed_1);
         map.addLayer(layer_UT_DEM_Fixed_1);
         function pop_UT_Roads_Cartocode123_2(feature, layer) {
             layer.on({
-                mouseout: function(e) {
+                mouseout: function (e) {
                     for (i in e.target._eventParents) {
                         e.target._eventParents[i].resetStyle(e.target);
                     }
@@ -428,7 +435,7 @@
                         <td colspan="2">' + (feature.properties['SHAPE_Leng'] !== null ? autolinker.link(feature.properties['SHAPE_Leng'].toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
-            layer.bindPopup(popupContent, {maxHeight: 400});
+            layer.bindPopup(popupContent, { maxHeight: 400 });
         }
 
         function style_UT_Roads_Cartocode123_2_0() {
@@ -463,7 +470,7 @@
         map.addLayer(layer_UT_Roads_Cartocode123_2);
         function pop_UTCitiesandTowns_3(feature, layer) {
             layer.on({
-                mouseout: function(e) {
+                mouseout: function (e) {
                     for (i in e.target._eventParents) {
                         e.target._eventParents[i].resetStyle(e.target);
                     }
@@ -496,7 +503,7 @@
                         <td colspan="2"><strong>CARTO</strong><br />' + (feature.properties['CARTO'] !== null ? autolinker.link(feature.properties['CARTO'].toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
-            layer.bindPopup(popupContent, {maxHeight: 400});
+            layer.bindPopup(popupContent, { maxHeight: 400 });
         }
         function style_UTCitiesandTowns_3_0(feature) {
             var context = {
@@ -505,55 +512,55 @@
             };
             // Start of if blocks and style check logic
             if (exp_UTCitiesandTowns_3rule0_eval_expression(context)) {
-                  return {
-                pane: 'pane_UTCitiesandTowns_3',
-        rotationAngle: 0.0,
-        rotationOrigin: 'center center',
-        icon: L.icon({
-            iconUrl: 'markers/city_large.svg',
-            iconSize: [7.6, 7.6]
-        }),
-                interactive: true,
-            };
-                }
-                else if (exp_UTCitiesandTowns_3rule1_eval_expression(context)) {
-                  return {
-                pane: 'pane_UTCitiesandTowns_3',
-        rotationAngle: 0.0,
-        rotationOrigin: 'center center',
-        icon: L.icon({
-            iconUrl: 'markers/arches.svg',
-            iconSize: [38.0, 38.0]
-        }),
-                interactive: true,
-            };
-                }
-                else if (exp_UTCitiesandTowns_3rule2_eval_expression(context)) {
-                  return {
-                pane: 'pane_UTCitiesandTowns_3',
-        rotationAngle: 0.0,
-        rotationOrigin: 'center center',
-        icon: L.icon({
-            iconUrl: 'markers/skiing.svg',
-            iconSize: [38.0, 38.0]
-        }),
-                interactive: true,
-            };
-                }
-                else if (exp_UTCitiesandTowns_3rule3_eval_expression(context)) {
-                  return {
-                pane: 'pane_UTCitiesandTowns_3',
-        rotationAngle: -0.00872665,
-        rotationOrigin: 'center center',
-        icon: L.icon({
-            iconUrl: 'markers/salt-lake-city.svg',
-            iconSize: [45.599999999999994, 45.599999999999994]
-        }),
-                interactive: true,
-            };
-                }
+                return {
+                    pane: 'pane_UTCitiesandTowns_3',
+                    rotationAngle: 0.0,
+                    rotationOrigin: 'center center',
+                    icon: L.icon({
+                        iconUrl: 'markers/city_large.svg',
+                        iconSize: [7.6, 7.6]
+                    }),
+                    interactive: true,
+                };
+            }
+            else if (exp_UTCitiesandTowns_3rule1_eval_expression(context)) {
+                return {
+                    pane: 'pane_UTCitiesandTowns_3',
+                    rotationAngle: 0.0,
+                    rotationOrigin: 'center center',
+                    icon: L.icon({
+                        iconUrl: 'markers/arches.svg',
+                        iconSize: [38.0, 38.0]
+                    }),
+                    interactive: true,
+                };
+            }
+            else if (exp_UTCitiesandTowns_3rule2_eval_expression(context)) {
+                return {
+                    pane: 'pane_UTCitiesandTowns_3',
+                    rotationAngle: 0.0,
+                    rotationOrigin: 'center center',
+                    icon: L.icon({
+                        iconUrl: 'markers/skiing.svg',
+                        iconSize: [38.0, 38.0]
+                    }),
+                    interactive: true,
+                };
+            }
+            else if (exp_UTCitiesandTowns_3rule3_eval_expression(context)) {
+                return {
+                    pane: 'pane_UTCitiesandTowns_3',
+                    rotationAngle: -0.00872665,
+                    rotationOrigin: 'center center',
+                    icon: L.icon({
+                        iconUrl: 'markers/salt-lake-city.svg',
+                        iconSize: [45.599999999999994, 45.599999999999994]
+                    }),
+                    interactive: true,
+                };
+            }
             else {
-                return {fill: false, stroke: false};
+                return { fill: false, stroke: false };
             }
         }
         map.createPane('pane_UTCitiesandTowns_3');
@@ -572,7 +579,7 @@
             dataVar: 'json_UTCitiesandTowns_3',
             layerName: 'layer_UTCitiesandTowns_3',
             pane: 'pane_UTCitiesandTowns_3',
-            pointToLayer: pointToLayer_UTCitiesandTowns_3_0, 
+            pointToLayer: pointToLayer_UTCitiesandTowns_3_0,
             onEachFeature: pop_UTCitiesandTowns_3
         });
         function getUTCitiesandTowns_3Json(geojson) {
@@ -588,36 +595,41 @@
             title: 'Testing'
         }).addTo(map);
         document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
-        .className += ' fa fa-search';
+            .className += ' fa fa-search';
         document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
-        .title += 'Search for a place';
+            .title += 'Search for a place';
         var baseMaps = {};
-        L.control.layers(baseMaps,{'UT Cities and Towns<br /><table><tr><td style="text-align: center;"><img src="legend/UTCitiesandTowns_3_0.png" /></td><td></td></tr><tr><td style="text-align: center;"><img src="legend/UTCitiesandTowns_3_1.png" /></td><td></td></tr><tr><td style="text-align: center;"><img src="legend/UTCitiesandTowns_3_2.png" /></td><td></td></tr><tr><td style="text-align: center;"><img src="legend/UTCitiesandTowns_3_3.png" /></td><td></td></tr></table>': layer_UTCitiesandTowns_3,'<img src="legend/UT_Roads_Cartocode123_2.png" /> UT_Roads_Cartocode123': layer_UT_Roads_Cartocode123_2,"UT_DEM_Fixed": layer_UT_DEM_Fixed_1,'<img src="legend/UT_State_Boundary_0.png" /> UT_State_Boundary': layer_UT_State_Boundary_0,}).addTo(map);
+        L.control.layers(baseMaps, { 'UT Cities and Towns<br /><table><tr><td style="text-align: center;"><img src="legend/UTCitiesandTowns_3_0.png" /></td><td></td></tr><tr><td style="text-align: center;"><img src="legend/UTCitiesandTowns_3_1.png" /></td><td></td></tr><tr><td style="text-align: center;"><img src="legend/UTCitiesandTowns_3_2.png" /></td><td></td></tr><tr><td style="text-align: center;"><img src="legend/UTCitiesandTowns_3_3.png" /></td><td></td></tr></table>': layer_UTCitiesandTowns_3, '<img src="legend/UT_Roads_Cartocode123_2.png" /> UT_Roads_Cartocode123': layer_UT_Roads_Cartocode123_2, "UT_DEM_Fixed": layer_UT_DEM_Fixed_1, '<img src="legend/UT_State_Boundary_0.png" /> UT_State_Boundary': layer_UT_State_Boundary_0, }).addTo(map);
         map.addControl(new L.Control.Search({
             layer: layer_UTCitiesandTowns_3,
             initial: false,
             hideMarkerOnCollapse: true,
-            propertyName: 'NAME'}));
+            propertyName: 'NAME'
+        }));
         document.getElementsByClassName('search-button')[0].className +=
-         ' fa fa-binoculars';
+            ' fa fa-binoculars';
         L.ImageOverlay.include({
             getBounds: function () {
                 return this._bounds;
             }
         });
         resetLabels([layer_UTCitiesandTowns_3]);
-        map.on("zoomend", function(){
+        map.on("zoomend", function () {
             resetLabels([layer_UTCitiesandTowns_3]);
         });
-        map.on("layeradd", function(){
+        map.on("layeradd", function () {
             resetLabels([layer_UTCitiesandTowns_3]);
         });
-        map.on("layerremove", function(){
+        map.on("layerremove", function () {
             resetLabels([layer_UTCitiesandTowns_3]);
         });
-        </script>
-        <script src='http://localhost:8080/geoserver/wfs?SERVICE=WFS&VERSION=1.0.0&REQUEST=GetFeature&TYPENAME=UT_State_Boundary:ut_state_boundary&SRSNAME=EPSG:4326&outputFormat=text%2Fjavascript&format_options=callback%3AgetUT_State_Boundary_0Json'></script>
-        <script src='http://localhost:8080/geoserver/wfs?SERVICE=WFS&VERSION=1.0.0&REQUEST=GetFeature&TYPENAME=roads_cartocode123_ut:ut_roads_cartocode123&SRSNAME=EPSG:4326&outputFormat=text%2Fjavascript&format_options=callback%3AgetUT_Roads_Cartocode123_2Json'></script>
-        <script src='http://localhost:8080/geoserver/wfs?SERVICE=WFS&VERSION=1.0.0&REQUEST=GetFeature&TYPENAME=cities_towns_ut:utah_city_and_town_locations___citiestownslocations&SRSNAME=EPSG:4326&outputFormat=text%2Fjavascript&format_options=callback%3AgetUTCitiesandTowns_3Json'></script>
-    </body>
+    </script>
+    <script
+        src='http://localhost:8080/geoserver/wfs?SERVICE=WFS&VERSION=1.0.0&REQUEST=GetFeature&TYPENAME=UT_State_Boundary:ut_state_boundary&SRSNAME=EPSG:4326&outputFormat=text%2Fjavascript&format_options=callback%3AgetUT_State_Boundary_0Json'></script>
+    <script
+        src='http://localhost:8080/geoserver/wfs?SERVICE=WFS&VERSION=1.0.0&REQUEST=GetFeature&TYPENAME=roads_cartocode123_ut:ut_roads_cartocode123&SRSNAME=EPSG:4326&outputFormat=text%2Fjavascript&format_options=callback%3AgetUT_Roads_Cartocode123_2Json'></script>
+    <script
+        src='http://localhost:8080/geoserver/wfs?SERVICE=WFS&VERSION=1.0.0&REQUEST=GetFeature&TYPENAME=cities_towns_ut:utah_city_and_town_locations___citiestownslocations&SRSNAME=EPSG:4326&outputFormat=text%2Fjavascript&format_options=callback%3AgetUTCitiesandTowns_3Json'></script>
+</body>
+
 </html>
